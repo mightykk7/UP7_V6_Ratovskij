@@ -54,7 +54,12 @@ class TeachersFragment : Fragment() {
 
     private fun setupListeners() {
         fabAddTeacher.setOnClickListener {
-            showSnackbar("Добавление преподавателя")
+            // Добавьте переход к фрагменту добавления преподавателя
+            val addTeacherFragment = AddTeacherFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, addTeacherFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -62,7 +67,7 @@ class TeachersFragment : Fragment() {
         lifecycleScope.launch {
             val database = AppDatabase.getDatabase(requireContext())
             database.teacherDao().getAllTeachers().collect { teachers ->
-                adapter.submitList(teachers)
+                adapter.updateList(teachers)
             }
         }
     }
@@ -72,6 +77,7 @@ class TeachersFragment : Fragment() {
             val database = AppDatabase.getDatabase(requireContext())
             database.teacherDao().deleteTeacher(teacher)
             showSnackbar("Преподаватель удален")
+            loadTeachers() // Перезагружаем список
         }
     }
 

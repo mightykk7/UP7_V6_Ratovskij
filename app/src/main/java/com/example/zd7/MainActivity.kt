@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -23,35 +24,48 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var navView: NavigationView
-    private lateinit var bottomNavView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+
+        // Инициализируем базу данных
         DatabaseHelper(this).seedDatabaseIfNeeded()
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
-        bottomNavView = findViewById(R.id.bottom_nav_view)
 
         setupNavigation()
         checkUserRole()
     }
 
     private fun setupNavigation() {
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val bottomNavView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
+        // Находим NavController по ID контейнера
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        navController = navHostFragment?.findNavController()
+            ?: findNavController(R.id.nav_host_fragment)
+
+        // Настраиваем AppBarConfiguration
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.studentsFragment, R.id.teachersFragment),
+            setOf(
+                R.id.homeFragment,
+                R.id.studentsFragment,
+                R.id.teachersFragment,
+                R.id.specialtiesFragment,
+                R.id.profileFragment
+            ),
             drawerLayout
         )
 
+        // Настраиваем ActionBar
+        setSupportActionBar(findViewById(R.id.toolbar))
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Настраиваем навигационные view
         navView.setupWithNavController(navController)
         bottomNavView.setupWithNavController(navController)
 
@@ -61,6 +75,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupMenuVisibility() {
         val currentUserRole = sharedPreferences.getString("user_role", "") ?: ""
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val bottomNavView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
+
         val navMenu = navView.menu
         val bottomMenu = bottomNavView.menu
 
@@ -81,12 +98,13 @@ class MainActivity : AppCompatActivity() {
 
                 bottomMenu.findItem(R.id.specialtiesFragment).isVisible = false
             }
-            "Приемная комиссия" -> {
-            }
+            // "Приемная комиссия" - все пункты видимы
         }
     }
 
     private fun setupNavigationListeners() {
+        val navView: NavigationView = findViewById(R.id.nav_view)
+
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_logout -> {
@@ -99,11 +117,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
             }
-        }
-
-        bottomNavView.setOnItemSelectedListener { menuItem ->
-            NavigationUI.onNavDestinationSelected(menuItem, navController)
-            true
         }
     }
 

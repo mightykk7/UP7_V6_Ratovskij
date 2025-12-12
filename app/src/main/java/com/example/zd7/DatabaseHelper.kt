@@ -4,8 +4,10 @@ import android.content.Context
 import com.example.zd7.entities.Specialty
 import com.example.zd7.entities.Student
 import com.example.zd7.entities.Teacher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 
 class DatabaseHelper(private val context: Context) {
 
@@ -15,7 +17,7 @@ class DatabaseHelper(private val context: Context) {
 
     fun seedDatabaseIfNeeded() {
         if (!isDatabaseSeeded) {
-            runBlocking {
+            CoroutineScope(Dispatchers.IO).launch {
                 seedDatabase()
                 isDatabaseSeeded = true
             }
@@ -27,19 +29,21 @@ class DatabaseHelper(private val context: Context) {
 
         try {
             // Проверяем, есть ли уже данные
-            val specialtiesCount = database.specialtyDao().getAllSpecialties().firstOrNull()?.size ?: 0
+            val specialties = database.specialtyDao().getAllSpecialties().firstOrNull()
+            val specialtiesCount = specialties?.size ?: 0
+
             if (specialtiesCount > 0) {
                 return // База уже заполнена
             }
 
             // Добавляем специальности
-            val specialties = listOf(
+            val specialtyList = listOf(
                 Specialty(specialtyName = "Информационные системы", isBudgetAvailable = true),
                 Specialty(specialtyName = "Программирование", isBudgetAvailable = true),
                 Specialty(specialtyName = "Сетевое администрирование", isBudgetAvailable = false)
             )
 
-            specialties.forEach { specialty ->
+            specialtyList.forEach { specialty ->
                 database.specialtyDao().insertSpecialty(specialty)
             }
 

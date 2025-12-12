@@ -17,7 +17,7 @@ data class Student(
     val photoUrl: String? = null,
 
     @ColumnInfo(name = "birth_date")
-    val birthDate: String, // Формат: "dd.MM.yyyy"
+    val birthDate: String,
 
     @ColumnInfo(name = "group_id")
     val groupId: Int,

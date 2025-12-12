@@ -4,29 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.zd7.entities.Teacher
 
 class TeacherAdapter(
     private val onEdit: (Teacher) -> Unit,
     private val onDelete: (Teacher) -> Unit
-) : ListAdapter<Teacher, TeacherAdapter.ViewHolder>(TeacherDiffCallback()) {
+) : RecyclerView.Adapter<TeacherAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val name = itemView.findViewById<TextView>(android.R.id.text1)
-        private val email = itemView.findViewById<TextView>(android.R.id.text2)
+    private var teachers: List<Teacher> = emptyList()
 
-        fun bind(teacher: Teacher, onEdit: (Teacher) -> Unit, onDelete: (Teacher) -> Unit) {
-            name.text = teacher.fullName
-            email.text = teacher.email
-            itemView.setOnClickListener { onEdit(teacher) }
-            itemView.setOnLongClickListener {
-                onDelete(teacher)
-                true
-            }
-        }
+    fun updateList(newList: List<Teacher>) {
+        teachers = newList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,11 +26,25 @@ class TeacherAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onEdit, onDelete)
+        holder.bind(teachers[position])
+        holder.itemView.setOnClickListener {
+            onEdit.invoke(teachers[position])
+        }
+        holder.itemView.setOnLongClickListener {
+            onDelete.invoke(teachers[position])
+            true
+        }
     }
-}
 
-class TeacherDiffCallback : DiffUtil.ItemCallback<Teacher>() {
-    override fun areItemsTheSame(oldItem: Teacher, newItem: Teacher) = oldItem.teacherId == newItem.teacherId
-    override fun areContentsTheSame(oldItem: Teacher, newItem: Teacher) = oldItem == newItem
+    override fun getItemCount(): Int = teachers.size
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val name: TextView = itemView.findViewById(android.R.id.text1)
+        private val email: TextView = itemView.findViewById(android.R.id.text2)
+
+        fun bind(teacher: Teacher) {
+            name.text = teacher.fullName
+            email.text = teacher.email
+        }
+    }
 }
