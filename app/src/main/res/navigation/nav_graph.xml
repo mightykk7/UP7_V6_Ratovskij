@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.zd7.HomeFragment"
+        android:label="Главная"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/studentsFragment"
+        android:name="com.example.zd7.StudentsFragment"
+        android:label="Студенты"
+        tools:layout="@layout/fragment_students" />
+
+    <fragment
+        android:id="@+id/addStudentFragment"
+        android:name="com.example.zd7.AddStudentFragment"
+        android:label="Добавить студента"
+        tools:layout="@layout/fragment_add_student" />
+
+    <fragment
+        android:id="@+id/teachersFragment"
+        android:name="com.example.zd7.TeachersFragment"
+        android:label="Преподаватели"
+        tools:layout="@layout/fragment_teachers" />
+
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="com.example.zd7.GroupsFragment"
+        android:label="Группы"
+        tools:layout="@layout/fragment_groups" />
+
+    <fragment
+        android:id="@+id/specialtiesFragment"
+        android:name="com.example.zd7.SpecialtiesFragment"
+        android:label="Специальности"
+        tools:layout="@layout/fragment_specialties" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.zd7.ProfileFragment"
+        android:label="Профиль"
+        tools:layout="@layout/fragment_profile" />
+
+    <action
+        android:id="@+id/action_studentsFragment_to_addStudentFragment"
+        app:destination="@id/addStudentFragment" />
+
+    <action
+        android:id="@+id/action_addStudentFragment_pop"
+        app:popUpTo="@id/studentsFragment"
+        app:popUpToInclusive="false" />
+
+</navigation>

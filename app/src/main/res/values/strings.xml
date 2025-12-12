@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Колледж ZD7</string>
+    <string name="title_login">Авторизация</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Пароль</string>
+    <string name="btn_login">Войти</string>
+    <string name="select_role">Выберите роль</string>
+    <string name="role_admin">Приемная комиссия</string>
+    <string name="role_teacher">Преподаватель</string>
+    <string name="role_student">Студент</string>
+    <string name="search">Поиск...</string>
+</resources>

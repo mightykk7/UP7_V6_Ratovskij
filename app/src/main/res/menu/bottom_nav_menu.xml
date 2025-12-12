@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Главная" />
+
+    <item
+        android:id="@+id/studentsFragment"
+        android:icon="@drawable/ic_school"
+        android:title="Студенты" />
+
+    <item
+        android:id="@+id/teachersFragment"
+        android:icon="@drawable/ic_account"
+        android:title="Преподаватели" />
+
+    <item
+        android:id="@+id/specialtiesFragment"
+        android:icon="@drawable/ic_category"
+        android:title="Специальности" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_person"
+        android:title="Профиль" />
+
+</menu>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Фото студента -->
+        <ImageView
+            android:id="@+id/ivStudentPhoto"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person_placeholder" />
+
+        <!-- Информация о студенте -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- ФИО -->
+            <TextView
+                android:id="@+id/tvStudentName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Иван Иванов"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Группа -->
+            <TextView
+                android:id="@+id/tvStudentGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Группа: ИСП-101"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Курс -->
+            <TextView
+                android:id="@+id/tvStudentCourse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Курс: 1"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp" />
+
+            <!-- Бюджет/Внебюджет -->
+            <TextView
+                android:id="@+id/tvStudentBudget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_budget_status"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="Бюджет"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
