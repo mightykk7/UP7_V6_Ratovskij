@@ -15,25 +15,53 @@
         android:id="@+id/studentsFragment"
         android:name="com.example.zd7.StudentsFragment"
         android:label="Студенты"
-        tools:layout="@layout/fragment_students" />
+        tools:layout="@layout/fragment_students">
+
+        <action
+            android:id="@+id/action_studentsFragment_to_addStudentFragment"
+            app:destination="@id/addStudentFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/addStudentFragment"
         android:name="com.example.zd7.AddStudentFragment"
         android:label="Добавить студента"
-        tools:layout="@layout/fragment_add_student" />
+        tools:layout="@layout/fragment_add_student">
+
+        <action
+            android:id="@+id/action_addStudentFragment_to_studentsFragment"
+            app:destination="@id/studentsFragment"
+            app:popUpTo="@id/studentsFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/teachersFragment"
         android:name="com.example.zd7.TeachersFragment"
         android:label="Преподаватели"
-        tools:layout="@layout/fragment_teachers" />
+        tools:layout="@layout/fragment_teachers">
+
+        <action
+            android:id="@+id/action_teachersFragment_to_addTeacherFragment"
+            app:destination="@id/addTeacherFragment" />
+
+    </fragment>
 
     <fragment
-        android:id="@+id/groupsFragment"
-        android:name="com.example.zd7.GroupsFragment"
-        android:label="Группы"
-        tools:layout="@layout/fragment_groups" />
+        android:id="@+id/addTeacherFragment"
+        android:name="com.example.zd7.AddTeacherFragment"
+        android:label="Добавить преподавателя"
+        tools:layout="@layout/fragment_add_teacher">
+
+        <action
+            android:id="@+id/action_addTeacherFragment_to_teachersFragment"
+            app:destination="@id/teachersFragment"
+            app:popUpTo="@id/teachersFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/specialtiesFragment"
@@ -46,14 +74,5 @@
         android:name="com.example.zd7.ProfileFragment"
         android:label="Профиль"
         tools:layout="@layout/fragment_profile" />
-
-    <action
-        android:id="@+id/action_studentsFragment_to_addStudentFragment"
-        app:destination="@id/addStudentFragment" />
-
-    <action
-        android:id="@+id/action_addStudentFragment_pop"
-        app:popUpTo="@id/studentsFragment"
-        app:popUpToInclusive="false" />
 
 </navigation>

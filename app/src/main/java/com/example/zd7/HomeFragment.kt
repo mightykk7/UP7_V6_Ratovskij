@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -14,6 +16,8 @@ class HomeFragment : Fragment() {
     private lateinit var tvWelcome: TextView
     private lateinit var tvStudentCount: TextView
     private lateinit var tvTeacherCount: TextView
+
+    private var statsJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,20 +42,31 @@ class HomeFragment : Fragment() {
         val email = sharedPreferences.getString("user_email", "")
         val role = sharedPreferences.getString("user_role", "")
 
-        tvWelcome.text = "Добро пожаловать, $email!\nРежим: $role"
+        tvWelcome.text = "Добро пожаловать!\nРежим: $role"
     }
 
     private fun loadStatistics() {
-        lifecycleScope.launch {
+        statsJob?.cancel()
+        statsJob = viewLifecycleOwner.lifecycleScope.launch {
             val database = AppDatabase.getDatabase(requireContext())
 
-            database.studentDao().getAllStudents().collect { students ->
-                tvStudentCount.text = "Студентов: ${students.size}"
-            }
-
-            database.teacherDao().getAllTeachers().collect { teachers ->
-                tvTeacherCount.text = "Преподавателей: ${teachers.size}"
+            // Используем combine для объединения двух Flow
+            combine(
+                database.studentDao().getAllStudents(),
+                database.teacherDao().getAllTeachers()
+            ) { students, teachers ->
+                Pair(students, teachers)
+            }.collect { (students, teachers) ->
+                if (isAdded && view != null) {
+                    tvStudentCount.text = "Студентов: ${students.size}"
+                    tvTeacherCount.text = "Преподавателей: ${teachers.size}"
+                }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        statsJob?.cancel()
     }
 }

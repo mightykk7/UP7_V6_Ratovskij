@@ -32,6 +32,9 @@ class AddStudentFragment : Fragment() {
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
 
+    // Добавляем список групп как глобальную переменную
+    private val groups = listOf("ПР", "ПГС", "БД", "ДЗ")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +59,9 @@ class AddStudentFragment : Fragment() {
         setupDatePicker()
         setupSpinners()
         setupListeners()
+
+        // По умолчанию выбираем бюджет
+        rbBudget.isChecked = true
     }
 
     private fun setupDatePicker() {
@@ -87,7 +93,7 @@ class AddStudentFragment : Fragment() {
     }
 
     private fun setupSpinners() {
-        val groups = listOf("ИСП-101", "ИСП-102", "ПРОГ-201", "СЕТИ-301")
+        // Группы берутся из списка groups
         val groupAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
@@ -160,9 +166,9 @@ class AddStudentFragment : Fragment() {
                     email = etEmail.text.toString().trim(),
                     password = etPassword.text.toString().trim(),
                     birthDate = etBirthDate.text.toString().trim(),
-                    groupId = spGroup.selectedItemPosition + 1,
+                    groupId = groups.indexOf(spGroup.selectedItem.toString()) + 1, // Получаем индекс выбранной группы
                     course = spCourse.selectedItem.toString().toInt(),
-                    isBudget = rbBudget.isChecked
+                    isBudget = rbBudget.isChecked // Берем реальное значение из RadioButton
                 )
 
                 val id = database.studentDao().insertStudent(student)

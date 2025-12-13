@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -35,7 +36,15 @@ class MainActivity : AppCompatActivity() {
         DatabaseHelper(this).seedDatabaseIfNeeded()
 
         drawerLayout = findViewById(R.id.drawer_layout)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
+        // Убираем три точки (overflow menu)
+        toolbar.overflowIcon = null
+        toolbar.menu?.clear()
+
+        // ИЛИ так (предотвращает создание меню)
+        toolbar.setContentInsetsAbsolute(0, 0)
         setupNavigation()
         checkUserRole()
     }
@@ -85,7 +94,6 @@ class MainActivity : AppCompatActivity() {
             "Студент" -> {
                 navMenu.findItem(R.id.studentsFragment).isVisible = false
                 navMenu.findItem(R.id.teachersFragment).isVisible = false
-                navMenu.findItem(R.id.groupsFragment).isVisible = false
                 navMenu.findItem(R.id.specialtiesFragment).isVisible = false
 
                 bottomMenu.findItem(R.id.studentsFragment).isVisible = false
@@ -93,7 +101,6 @@ class MainActivity : AppCompatActivity() {
                 bottomMenu.findItem(R.id.specialtiesFragment).isVisible = false
             }
             "Преподаватель" -> {
-                navMenu.findItem(R.id.groupsFragment).isVisible = false
                 navMenu.findItem(R.id.specialtiesFragment).isVisible = false
 
                 bottomMenu.findItem(R.id.specialtiesFragment).isVisible = false
@@ -148,11 +155,9 @@ class MainActivity : AppCompatActivity() {
             "Студент" -> {
                 menu.findItem(R.id.studentsFragment).isVisible = false
                 menu.findItem(R.id.teachersFragment).isVisible = false
-                menu.findItem(R.id.groupsFragment).isVisible = false
                 menu.findItem(R.id.specialtiesFragment).isVisible = false
             }
             "Преподаватель" -> {
-                menu.findItem(R.id.groupsFragment).isVisible = false
                 menu.findItem(R.id.specialtiesFragment).isVisible = false
             }
         }

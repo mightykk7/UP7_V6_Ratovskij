@@ -101,6 +101,7 @@
             android:text="Курс"
             android:textSize="14sp"
             android:layout_marginBottom="8dp"/>
+
         <Spinner
             android:id="@+id/spCourse"
             android:layout_width="match_parent"
@@ -118,14 +119,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:checkedButton="@+id/rbBudget">
 
             <RadioButton
                 android:id="@+id/rbBudget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:text="Бюджет"
-                android:layout_marginEnd="16dp"/>
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/rbNonBudget"
@@ -139,7 +142,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="end"
+            android:layout_marginBottom="72dp"> <!-- ДОБАВЛЕНО ОТСТУП СНИЗУ -->
 
             <Button
                 android:id="@+id/btnCancel"

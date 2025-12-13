@@ -36,6 +36,4 @@ interface StudentDao {
     @Query("SELECT * FROM students WHERE full_name LIKE '%' || :query || '%' ORDER BY full_name")
     fun searchStudentsByName(query: String): Flow<List<Student>>
 
-    @Query("SELECT COUNT(*) FROM students WHERE is_budget = 1")
-    fun getBudgetStudentsCount(): Flow<Int>
 }

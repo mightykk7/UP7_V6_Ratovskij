@@ -1,5 +1,7 @@
 package com.example.zd7
 
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,7 +33,7 @@ class ProfileFragment : Fragment() {
         tvRole = view.findViewById(R.id.tvRole)
         btnLogout = view.findViewById(R.id.btnLogout)
 
-        sharedPreferences = requireContext().getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences("auth", Context.MODE_PRIVATE)
 
         loadProfileData()
         setupListeners()
@@ -42,8 +44,10 @@ class ProfileFragment : Fragment() {
         val role = sharedPreferences.getString("user_role", "")
         val userId = sharedPreferences.getInt("user_id", 0)
 
-        tvEmail.text = "Email: $email"
-        tvRole.text = "Роль: $role\nID пользователя: $userId"
+        if (isAdded) { // Проверяем, что фрагмент прикреплен
+            tvEmail.text = "Email: $email"
+            tvRole.text = "Роль: $role\nID пользователя: $userId"
+        }
     }
 
     private fun setupListeners() {
@@ -57,11 +61,22 @@ class ProfileFragment : Fragment() {
         editor.clear()
         editor.apply()
 
-        showSnackbar("Вы вышли из системы")
-        requireActivity().finish()
+        if (isAdded) {
+            showSnackbar("Вы вышли из системы")
+
+            // Запускаем LoginActivity и закрываем текущую
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        // Не вызываем requireActivity().finish() здесь, так как это может вызвать проблемы
+        // с жизненным циклом фрагмента
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+        if (isAdded && view != null) {
+            Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+        }
     }
 }

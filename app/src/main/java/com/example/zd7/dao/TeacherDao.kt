@@ -30,6 +30,4 @@ interface TeacherDao {
     @Query("SELECT * FROM teachers WHERE email = :email")
     suspend fun getTeacherByEmail(email: String): Teacher?
 
-    @Query("SELECT * FROM teachers WHERE hours_worked > max_hours")
-    fun getOverworkedTeachers(): Flow<List<Teacher>>
 }

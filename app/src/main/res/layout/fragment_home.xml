@@ -56,13 +56,6 @@
                     android:text="Преподавателей: 0"
                     android:textSize="16sp"
                     android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:id="@+id/tvGroupCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Групп: 0"
-                    android:textSize="16sp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

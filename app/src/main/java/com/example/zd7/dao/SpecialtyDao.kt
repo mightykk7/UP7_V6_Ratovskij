@@ -23,7 +23,4 @@ interface SpecialtyDao {
 
     @Query("SELECT * FROM specialties ORDER BY specialty_name")
     fun getAllSpecialties(): Flow<List<Specialty>>
-
-    @Query("SELECT * FROM specialties WHERE is_budget = 1")
-    fun getBudgetSpecialties(): Flow<List<Specialty>>
 }

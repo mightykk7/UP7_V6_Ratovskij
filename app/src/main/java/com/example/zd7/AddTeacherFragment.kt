@@ -1,5 +1,6 @@
 package com.example.zd7
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ class AddTeacherFragment : Fragment() {
     private lateinit var etPassword: EditText
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +40,25 @@ class AddTeacherFragment : Fragment() {
         btnSave = view.findViewById(R.id.btnSave)
         btnCancel = view.findViewById(R.id.btnCancel)
 
-        setupListeners()
+        sharedPreferences = requireContext().getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+
+        // Проверяем права перед настройкой
+        if (checkPermissions()) {
+            setupListeners()
+        } else {
+            // Если нет прав, показываем сообщение и блокируем форму
+            showSnackbar("У вас нет прав для добавления преподавателей")
+            etFullName.isEnabled = false
+            etEmail.isEnabled = false
+            etPassword.isEnabled = false
+            btnSave.isEnabled = false
+            btnSave.visibility = View.GONE
+        }
+    }
+
+    private fun checkPermissions(): Boolean {
+        val currentUserRole = sharedPreferences.getString("user_role", "") ?: ""
+        return currentUserRole == "Приемная комиссия"
     }
 
     private fun setupListeners() {
@@ -106,6 +126,8 @@ class AddTeacherFragment : Fragment() {
     }
 
     private fun showSnackbar(message: String) {
-        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+        if (isAdded && view != null) {
+            Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+        }
     }
 }
